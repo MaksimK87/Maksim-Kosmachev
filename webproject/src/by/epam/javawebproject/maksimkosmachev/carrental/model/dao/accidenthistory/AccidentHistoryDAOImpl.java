@@ -1,8 +1,8 @@
 package by.epam.javawebproject.maksimkosmachev.carrental.model.dao.accidenthistory;
 
 import by.epam.javawebproject.maksimkosmachev.carrental.model.dao.AbstractDAO;
-import by.epam.javawebproject.maksimkosmachev.carrental.model.dao.exception.ConnectionPoolException;
-import by.epam.javawebproject.maksimkosmachev.carrental.model.dao.exception.EmptyResultSetException;
+import by.epam.javawebproject.maksimkosmachev.carrental.model.exception.ConnectionPoolException;
+import by.epam.javawebproject.maksimkosmachev.carrental.model.exception.EmptyResultSetException;
 import by.epam.javawebproject.maksimkosmachev.carrental.model.entity.AccidentHistory;
 import by.epam.javawebproject.maksimkosmachev.carrental.model.entity.Entity;
 import by.epam.javawebproject.maksimkosmachev.carrental.util.SystemConfig;

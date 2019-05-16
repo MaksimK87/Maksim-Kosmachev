@@ -1,12 +1,13 @@
 package by.epam.javawebproject.maksimkosmachev.carrental.model.dao.order;
 
 import by.epam.javawebproject.maksimkosmachev.carrental.model.dao.AbstractDAO;
-import by.epam.javawebproject.maksimkosmachev.carrental.model.dao.exception.*;
 import by.epam.javawebproject.maksimkosmachev.carrental.model.entity.Car;
 import by.epam.javawebproject.maksimkosmachev.carrental.model.entity.Entity;
 import by.epam.javawebproject.maksimkosmachev.carrental.model.entity.Order;
 import by.epam.javawebproject.maksimkosmachev.carrental.model.entity.User;
 import by.epam.javawebproject.maksimkosmachev.carrental.model.entity.enumpackage.*;
+import by.epam.javawebproject.maksimkosmachev.carrental.model.exception.ConnectionPoolException;
+import by.epam.javawebproject.maksimkosmachev.carrental.model.exception.SuchOrderNotExistsException;
 import by.epam.javawebproject.maksimkosmachev.carrental.util.SystemConfig;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;

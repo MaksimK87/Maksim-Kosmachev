@@ -1,7 +1,7 @@
 package by.epam.javawebproject.maksimkosmachev.carrental.model.dao.order;
 
 import by.epam.javawebproject.maksimkosmachev.carrental.model.dao.DAOInterface;
-import by.epam.javawebproject.maksimkosmachev.carrental.model.dao.exception.SuchOrderNotExistsException;
+import by.epam.javawebproject.maksimkosmachev.carrental.model.exception.SuchOrderNotExistsException;
 import by.epam.javawebproject.maksimkosmachev.carrental.model.entity.Car;
 import by.epam.javawebproject.maksimkosmachev.carrental.model.entity.Order;
 import by.epam.javawebproject.maksimkosmachev.carrental.model.entity.User;

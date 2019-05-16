@@ -1,6 +1,6 @@
 package by.epam.javawebproject.maksimkosmachev.carrental.model.dao.connectionpool;
 
-import by.epam.javawebproject.maksimkosmachev.carrental.model.dao.exception.ConnectionPoolException;
+import by.epam.javawebproject.maksimkosmachev.carrental.model.exception.ConnectionPoolException;
 import by.epam.javawebproject.maksimkosmachev.carrental.util.DBConnectionConfig;
 import by.epam.javawebproject.maksimkosmachev.carrental.util.SystemConfig;
 import org.apache.log4j.Logger;

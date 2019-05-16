@@ -1,7 +1,7 @@
 package by.epam.javawebproject.maksimkosmachev.carrental.model.dao;
 
-import by.epam.javawebproject.maksimkosmachev.carrental.model.dao.exception.*;
 import by.epam.javawebproject.maksimkosmachev.carrental.model.entity.Entity;
+import by.epam.javawebproject.maksimkosmachev.carrental.model.exception.*;
 
 import java.util.List;
 

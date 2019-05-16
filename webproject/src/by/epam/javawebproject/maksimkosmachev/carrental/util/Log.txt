@@ -1,9 +1,9 @@
 2019-05-02 22:47:13 ERROR AbstractDAO:54 - Exception in result set or connection java.sql.SQLException: No value specified for parameter 1
 2019-05-02 22:47:13 ERROR CarDAO:200 - Exception cause is empty resultSet
-2019-05-02 22:47:13 ERROR CarDAO:43 - Exception while getting all cars from database by.epam.javawebproject.maksimkosmachev.carrental.model.dao.exception.EmptyResultSetException
+2019-05-02 22:47:13 ERROR CarDAO:43 - Exception while getting all cars from database by.epam.javawebproject.maksimkosmachev.carrental.model.exception.EmptyResultSetException
 2019-05-02 22:47:13 ERROR AbstractDAO:54 - Exception in result set or connection java.sql.SQLException: No value specified for parameter 1
 2019-05-02 22:47:13 ERROR CarDAO:200 - Exception cause is empty resultSet
-2019-05-02 22:47:13 ERROR CarDAO:43 - Exception while getting all cars from database by.epam.javawebproject.maksimkosmachev.carrental.model.dao.exception.EmptyResultSetException
+2019-05-02 22:47:13 ERROR CarDAO:43 - Exception while getting all cars from database by.epam.javawebproject.maksimkosmachev.carrental.model.exception.EmptyResultSetException
 2019-05-02 23:11:34 INFO  CarDAOTest:74 - Result fromDB BMW
 2019-05-02 23:11:34 INFO  CarDAOTest:75 - Result fromEntity BMW
 2019-05-02 23:38:25 INFO  CarDAOTest:77 - Result fromDB BMW
