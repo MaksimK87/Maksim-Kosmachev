@@ -2,6 +2,6 @@ package by.epam.javawebproject.maksimkosmachev.carrental.model.dao.accidenthisto
 
 import by.epam.javawebproject.maksimkosmachev.carrental.model.dao.DAOInterface;
 
-public interface AccidentHistory extends DAOInterface {
+public interface AccidentHistoryDAO extends DAOInterface {
 
 }

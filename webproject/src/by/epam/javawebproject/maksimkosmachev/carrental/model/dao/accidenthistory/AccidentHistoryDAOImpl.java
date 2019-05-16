@@ -3,6 +3,7 @@ package by.epam.javawebproject.maksimkosmachev.carrental.model.dao.accidenthisto
 import by.epam.javawebproject.maksimkosmachev.carrental.model.dao.AbstractDAO;
 import by.epam.javawebproject.maksimkosmachev.carrental.model.dao.exception.ConnectionPoolException;
 import by.epam.javawebproject.maksimkosmachev.carrental.model.dao.exception.EmptyResultSetException;
+import by.epam.javawebproject.maksimkosmachev.carrental.model.entity.AccidentHistory;
 import by.epam.javawebproject.maksimkosmachev.carrental.model.entity.Entity;
 import by.epam.javawebproject.maksimkosmachev.carrental.util.SystemConfig;
 import org.apache.log4j.Logger;
@@ -15,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AccidentHistoryDAOImpl extends AbstractDAO implements AccidentHistory {
+public class AccidentHistoryDAOImpl extends AbstractDAO implements AccidentHistoryDAO {
 
     private static Logger logger = Logger.getLogger(by.epam.javawebproject.maksimkosmachev.carrental.model.entity.AccidentHistory.class);
 
@@ -40,10 +41,10 @@ public class AccidentHistoryDAOImpl extends AbstractDAO implements AccidentHisto
 
 
     @Override
-    public List<by.epam.javawebproject.maksimkosmachev.carrental.model.entity.AccidentHistory> findAll() {
+    public List<AccidentHistory> findAll() {
         Connection connection;
         PreparedStatement preparedStatement;
-        List<by.epam.javawebproject.maksimkosmachev.carrental.model.entity.AccidentHistory> historyList = null;
+        List<AccidentHistory> historyList = null;
         try {
             connection = getConnectionFromPool();
             preparedStatement = connection.prepareStatement(FIND_ALL_HISTORIES);
@@ -63,14 +64,14 @@ public class AccidentHistoryDAOImpl extends AbstractDAO implements AccidentHisto
     public Entity findEntityById(int id) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        by.epam.javawebproject.maksimkosmachev.carrental.model.entity.AccidentHistory history=null;
+        AccidentHistory history=null;
         int historyIndex = 0; // collection "cars" has only one entity car with index=0;
         try {
             connection = getConnectionFromPool();
             preparedStatement = connection.prepareStatement(FIND_HISTORY_BY_ID);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            List<by.epam.javawebproject.maksimkosmachev.carrental.model.entity.AccidentHistory> historyList = convertResultSet(resultSet);
+            List<AccidentHistory> historyList = convertResultSet(resultSet);
             if (historyList.size() != 0) {
                 history = historyList.get(historyIndex);
                 return history;
@@ -90,7 +91,7 @@ public class AccidentHistoryDAOImpl extends AbstractDAO implements AccidentHisto
     public boolean delete(Entity entity) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        if (entity instanceof by.epam.javawebproject.maksimkosmachev.carrental.model.entity.AccidentHistory && entity != null) {
+        if (entity instanceof AccidentHistory && entity != null) {
             try {
                 connection = getConnectionFromPool();
                 preparedStatement = connection.prepareStatement(DELETE_HISTORY_BY_ID);
@@ -114,19 +115,19 @@ public class AccidentHistoryDAOImpl extends AbstractDAO implements AccidentHisto
     public boolean insert(Entity entity) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        if (entity instanceof by.epam.javawebproject.maksimkosmachev.carrental.model.entity.AccidentHistory && entity != null) {
+        if (entity instanceof AccidentHistory && entity != null) {
             try {
                 connection = getConnectionFromPool();
                 preparedStatement = connection.prepareStatement(INSERT_HISTORY, Statement.RETURN_GENERATED_KEYS);
-                preparedStatement.setDouble(1, ((by.epam.javawebproject.maksimkosmachev.carrental.model.entity.AccidentHistory) entity).getDamageCost());
-                preparedStatement.setBoolean(2, ((by.epam.javawebproject.maksimkosmachev.carrental.model.entity.AccidentHistory) entity).getGuilt());
+                preparedStatement.setDouble(1, ((AccidentHistory) entity).getDamageCost());
+                preparedStatement.setBoolean(2, ((AccidentHistory) entity).getGuilt());
                 preparedStatement.setDate(3,
-                        Date.valueOf(((by.epam.javawebproject.maksimkosmachev.carrental.model.entity.AccidentHistory) entity).getAccidentDate().format(formatter)));
+                        Date.valueOf(((AccidentHistory) entity).getAccidentDate().format(formatter)));
 
                 preparedStatement.executeUpdate();
-                ResultSet genetatedKey = preparedStatement.getGeneratedKeys();
-                if (genetatedKey.next()) {
-                    entity.setId(genetatedKey.getInt(1));
+                ResultSet generatedKey = preparedStatement.getGeneratedKeys();
+                if (generatedKey.next()) {
+                    entity.setId(generatedKey.getInt(1));
                 }
 
             } catch (ConnectionPoolException | SQLException e) {
@@ -145,11 +146,11 @@ public class AccidentHistoryDAOImpl extends AbstractDAO implements AccidentHisto
     public boolean update(Entity entity) {
         Connection connection = null;
         PreparedStatement preparedStatement=null;
-        if (entity instanceof by.epam.javawebproject.maksimkosmachev.carrental.model.entity.AccidentHistory && entity != null) {
+        if (entity instanceof AccidentHistory && entity != null) {
             try {
                 connection = getConnectionFromPool();
                 preparedStatement = connection.prepareStatement(UPDATE_HISTORY);
-                preparedStatement.setDouble(1, ((by.epam.javawebproject.maksimkosmachev.carrental.model.entity.AccidentHistory) entity).getDamageCost());
+                preparedStatement.setDouble(1, ((AccidentHistory) entity).getDamageCost());
                 preparedStatement.setInt(2,  entity.getId());
                 preparedStatement.executeUpdate();
 
@@ -165,12 +166,12 @@ public class AccidentHistoryDAOImpl extends AbstractDAO implements AccidentHisto
         return false;
     }
 
-    private List<by.epam.javawebproject.maksimkosmachev.carrental.model.entity.AccidentHistory> convertResultSet(ResultSet resultSet) throws EmptyResultSetException {
-        List<by.epam.javawebproject.maksimkosmachev.carrental.model.entity.AccidentHistory> historyList = new ArrayList<>();
+    private List<AccidentHistory> convertResultSet(ResultSet resultSet) throws EmptyResultSetException {
+        List<AccidentHistory> historyList = new ArrayList<>();
         if (resultSet != null) {
             try {
                 while (resultSet.next()) {
-                    by.epam.javawebproject.maksimkosmachev.carrental.model.entity.AccidentHistory history = new by.epam.javawebproject.maksimkosmachev.carrental.model.entity.AccidentHistory();
+                    AccidentHistory history = new AccidentHistory();
                     history.setId(resultSet.getInt("accident_id"));
                     history.setDamageCost(resultSet.getDouble("damage_cost"));
                     history.setGuilt(resultSet.getBoolean("is_guilty"));
@@ -191,7 +192,7 @@ public class AccidentHistoryDAOImpl extends AbstractDAO implements AccidentHisto
     }
 
     public static void main(String[] args) {
-        //Entity accident=new AccidentHistory(8,1,true,LocalDate.parse("2000-03-23"));
+        //Entity accident=new AccidentHistoryDAO(8,1,true,LocalDate.parse("2000-03-23"));
 
         AccidentHistoryDAOImpl accidentHistoryDAO=new AccidentHistoryDAOImpl();
         System.out.println(accidentHistoryDAO.findEntityById(3));

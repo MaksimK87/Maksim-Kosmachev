@@ -87,7 +87,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 user = new User();
-                user = getUserResultSet(resultSet, user);
+                user = getUserFromResultSet(resultSet, user);
             } else {
                 System.out.println("Such account does not exist");
                 throw new SuchUserNotExistException();
@@ -117,7 +117,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                 try {
                     while (resultSet.next()) {
                         User user = new User();
-                        user = getUserResultSet(resultSet, user);
+                        user = getUserFromResultSet(resultSet, user);
                         users.add(user);
                     }
                 } catch (SQLException e) {
@@ -154,7 +154,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 user = new User();
-                user = getUserResultSet(resultSet, user);
+                user = getUserFromResultSet(resultSet, user);
 
             } else {
                 logger.error("Such user wasn't found by id");
@@ -260,7 +260,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         return preparedStatement;
     }
 
-    private User getUserResultSet(ResultSet resultSet, User user) throws SQLException {
+    private User getUserFromResultSet(ResultSet resultSet, User user) throws SQLException {
         user.setId(resultSet.getInt("user_id"));
         user.setLogin(resultSet.getString("login"));
         user.setPassword(resultSet.getString("password"));

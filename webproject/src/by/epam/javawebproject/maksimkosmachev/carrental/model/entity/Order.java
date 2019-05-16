@@ -14,11 +14,15 @@ public class Order extends Entity {
     private LocalDateTime refundDate;
     private boolean acceptOrder;
     private String refusalReason;
+    private Car car;
+    private User user;
+//    private AccidentHistoryDAO accidentHistory;
+//    private DamageAssessment damageAssessment;
 
-    public Order(int id, int rentTerm, double totalSum, LocalDateTime rentFromDate, boolean isPaid,
+    public Order(int rentTerm, double totalSum, LocalDateTime rentFromDate, boolean isPaid,
                  Condition conditionAfterRefund, LocalDateTime refundDate,
                  boolean acceptOrder, String refusalReason) {
-        super(id);
+        //super(id);
         this.rentTerm = rentTerm;
         this.totalSum = totalSum;
         this.rentFromDate = rentFromDate;
@@ -82,7 +86,7 @@ public class Order extends Entity {
         this.refundDate = refundDate;
     }
 
-    public boolean isAcceptOrder() {
+    public boolean getAcceptOrder() {
         return acceptOrder;
     }
 
@@ -98,32 +102,65 @@ public class Order extends Entity {
         this.refusalReason = refusalReason;
     }
 
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
+
+    public int getCarId() {
+        return car.getId();
+    }
+
+    public void setCarId(int id) {
+        car.setId(id);
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setUserId(int id) {
+        this.user.setId(id);
+    }
+
+    public int getUserId() {
+        return user.getId();
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return getId() == order.getId() &&
-                rentTerm == order.rentTerm &&
+        return rentTerm == order.rentTerm &&
                 Double.compare(order.totalSum, totalSum) == 0 &&
                 isPaid == order.isPaid &&
                 acceptOrder == order.acceptOrder &&
-                rentFromDate.equals(order.rentFromDate) &&
+                Objects.equals(rentFromDate, order.rentFromDate) &&
                 conditionAfterRefund == order.conditionAfterRefund &&
-                refundDate.equals(order.refundDate) &&
-                Objects.equals(refusalReason, order.refusalReason);
+                Objects.equals(refundDate, order.refundDate) &&
+                Objects.equals(refusalReason, order.refusalReason) &&
+                Objects.equals(car, order.car) &&
+                Objects.equals(user, order.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), rentTerm, totalSum, rentFromDate, isPaid, conditionAfterRefund, refundDate, acceptOrder, refusalReason);
+        return Objects.hash(rentTerm, totalSum, rentFromDate, isPaid, conditionAfterRefund, refundDate, acceptOrder, refusalReason, car, user);
     }
 
     @Override
     public String toString() {
-        return "Order{" +
-                "orderId=" + getId() +
-                ", rentTerm=" + rentTerm +
+        return "Order{ " + getId() +
+                " rentTerm=" + rentTerm +
                 ", totalSum=" + totalSum +
                 ", rentFromDate=" + rentFromDate +
                 ", isPaid=" + isPaid +
@@ -131,6 +168,8 @@ public class Order extends Entity {
                 ", refundDate=" + refundDate +
                 ", acceptOrder=" + acceptOrder +
                 ", refusalReason='" + refusalReason + '\'' +
+                ", car=" + car +
+                ", user=" + user +
                 '}';
     }
 }

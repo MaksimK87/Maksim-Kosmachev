@@ -62,7 +62,7 @@ public class AccidentHistory extends Entity {
 
     @Override
     public String toString() {
-        return "AccidentHistory{" +
+        return "AccidentHistoryDAO{" +
                 "damageCost=" + damageCost +
                 ", guilt=" + guilt +
                 ", accidentDate=" + accidentDate +
