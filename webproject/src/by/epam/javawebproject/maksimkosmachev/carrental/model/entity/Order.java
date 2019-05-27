@@ -2,16 +2,17 @@ package by.epam.javawebproject.maksimkosmachev.carrental.model.entity;
 
 import by.epam.javawebproject.maksimkosmachev.carrental.model.entity.enumpackage.Condition;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Order extends Entity {
     private int rentTerm;
     private double totalSum;
-    private LocalDateTime rentFromDate;
+    private LocalDate rentFromDate;
     private boolean isPaid;
     private Condition conditionAfterRefund;
-    private LocalDateTime refundDate;
+    private LocalDate refundDate;
     private boolean acceptOrder;
     private String refusalReason;
     private Car car;
@@ -19,8 +20,8 @@ public class Order extends Entity {
 //    private AccidentHistoryDAO accidentHistory;
 //    private DamageAssessment damageAssessment;
 
-    public Order(int rentTerm, double totalSum, LocalDateTime rentFromDate, boolean isPaid,
-                 Condition conditionAfterRefund, LocalDateTime refundDate,
+    public Order(int rentTerm, double totalSum, LocalDate rentFromDate, boolean isPaid,
+                 Condition conditionAfterRefund, LocalDate refundDate,
                  boolean acceptOrder, String refusalReason) {
         //super(id);
         this.rentTerm = rentTerm;
@@ -34,7 +35,8 @@ public class Order extends Entity {
     }
 
     public Order() {
-
+    car=new Car();
+    user=new User();
     }
 
 
@@ -54,11 +56,11 @@ public class Order extends Entity {
         this.totalSum = totalSum;
     }
 
-    public LocalDateTime getRentFromDate() {
+    public LocalDate getRentFromDate() {
         return rentFromDate;
     }
 
-    public void setRentFromDate(LocalDateTime rentFromDate) {
+    public void setRentFromDate(LocalDate rentFromDate) {
         this.rentFromDate = rentFromDate;
     }
 
@@ -78,11 +80,11 @@ public class Order extends Entity {
         this.conditionAfterRefund = conditionAfterRefund;
     }
 
-    public LocalDateTime getRefundDate() {
+    public LocalDate getRefundDate() {
         return refundDate;
     }
 
-    public void setRefundDate(LocalDateTime refundDate) {
+    public void setRefundDate(LocalDate refundDate) {
         this.refundDate = refundDate;
     }
 

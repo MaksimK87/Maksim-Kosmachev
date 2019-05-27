@@ -1,4 +1,4 @@
-package by.epam.javawebproject.maksimkosmachev.carrental.model.exception;
+package by.epam.javawebproject.maksimkosmachev.carrental.model.dao.exception;
 
 public class EmptyResultSetException extends Exception {
     public EmptyResultSetException() {

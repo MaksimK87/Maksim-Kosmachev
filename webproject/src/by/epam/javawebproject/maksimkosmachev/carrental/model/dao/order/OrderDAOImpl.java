@@ -6,8 +6,8 @@ import by.epam.javawebproject.maksimkosmachev.carrental.model.entity.Entity;
 import by.epam.javawebproject.maksimkosmachev.carrental.model.entity.Order;
 import by.epam.javawebproject.maksimkosmachev.carrental.model.entity.User;
 import by.epam.javawebproject.maksimkosmachev.carrental.model.entity.enumpackage.*;
-import by.epam.javawebproject.maksimkosmachev.carrental.model.exception.ConnectionPoolException;
-import by.epam.javawebproject.maksimkosmachev.carrental.model.exception.SuchOrderNotExistsException;
+import by.epam.javawebproject.maksimkosmachev.carrental.model.dao.exception.ConnectionPoolException;
+import by.epam.javawebproject.maksimkosmachev.carrental.model.dao.exception.SuchOrderNotExistsException;
 import by.epam.javawebproject.maksimkosmachev.carrental.util.SystemConfig;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -15,13 +15,12 @@ import org.apache.log4j.PropertyConfigurator;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
-
     private static final String FIND_ALL_ORDERS = "SELECT * FROM car_rental.order";
     private static final String FIND_ORDER_BY_ID = FIND_ALL_ORDERS + " WHERE order_id=?";
     private static final String FIND_ORDER_BY_USER_ID = FIND_ALL_ORDERS + " WHERE user_id=?";
@@ -34,7 +33,8 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
     private static final String SET_CAR_CONDITION = "UPDATE car_rental.order SET condition_after_refund=? WHERE order_id=?";
     private static final String JUSTIFY_REFUSE = "UPDATE car_rental.order SET refusal_reason=? WHERE order_id=?";
 
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm");
+    //private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm");
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 
     private static Logger logger = Logger.getLogger(OrderDAOImpl.class);
@@ -58,7 +58,7 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
             preparedStatement.setInt(1, user.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                order = getOrderFromResultSet(resultSet, order);
+                order = getOrderFromResultSet(resultSet);
             } else {
                 logger.error("Order with such user wasn't found!");
                 throw new SuchOrderNotExistsException();
@@ -81,10 +81,10 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
         try {
             connection = getConnectionFromPool();
             preparedStatement = connection.prepareStatement(FIND_ORDER_BY_CAR_ID);
-            preparedStatement.setInt(1, order.getCarId());
+            preparedStatement.setInt(1, car.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                order = getOrderFromResultSet(resultSet, order);
+                order = getOrderFromResultSet(resultSet);
             } else {
                 logger.error("Order with such car wasn't found!");
                 throw new SuchOrderNotExistsException();
@@ -182,10 +182,9 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
         try {
             connection = getConnectionFromPool();
             preparedStatement = connection.prepareStatement(FIND_ALL_ORDERS);
-            preparedStatement.setInt(1, order.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                order = getOrderFromResultSet(resultSet, order);
+                order = getOrderFromResultSet(resultSet);
                 orders.add(order);
             }
         } catch (ConnectionPoolException | SQLException e) {
@@ -204,10 +203,10 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
         try {
             connection = getConnectionFromPool();
             preparedStatement = connection.prepareStatement(FIND_ORDER_BY_ID);
-            preparedStatement.setInt(1, order.getId());
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                order = getOrderFromResultSet(resultSet, order);
+                order = getOrderFromResultSet(resultSet);
             } else {
                 logger.error("Order with such car wasn't found!");
                 throw new SuchOrderNotExistsException();
@@ -241,13 +240,13 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
     }
 
     @Override
-    public boolean insert(Entity entity) {    //rent_terms,rent_from_date,car_id,user_id
+    public boolean insert(Entity entity) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         if (entity instanceof Order && entity != null) {
             try {
                 connection = getConnectionFromPool();
-                preparedStatement = connection.prepareStatement(INSERT_USER_CHOICE,Statement.RETURN_GENERATED_KEYS);
+                preparedStatement = connection.prepareStatement(INSERT_USER_CHOICE, Statement.RETURN_GENERATED_KEYS);
                 preparedStatement.setInt(1, (((Order) entity).getRentTerm()));
                 preparedStatement.setDate(2,
                         Date.valueOf(((Order) entity).getRentFromDate().format(formatter)));
@@ -273,15 +272,15 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
         return false;
     }
 
-    private Order getOrderFromResultSet(ResultSet resultSet, Order order) throws SQLException {
-        order = new Order();
+    private Order getOrderFromResultSet(ResultSet resultSet) throws SQLException {
+        Order order = new Order();
         order.setId(resultSet.getInt("order_id"));
         order.setRentTerm(resultSet.getInt("rent_terms"));
         order.setTotalSum(resultSet.getDouble("total_sum"));
-        order.setRentFromDate(resultSet.getTimestamp("rent_from_date").toLocalDateTime());
+        order.setRentFromDate(resultSet.getDate("rent_from_date").toLocalDate());
         order.setConditionAfterRefund(Condition.
                 valueOf(resultSet.getString("condition_after_refund").toUpperCase()));
-        order.setRefundDate(resultSet.getTimestamp("refund_date").toLocalDateTime());
+        order.setRefundDate(resultSet.getDate("refund_date").toLocalDate());
         order.setAcceptOrder(resultSet.getBoolean("accept_order"));
         order.setRefusalReason(resultSet.getString("refusal_reason"));
         order.setCarId(resultSet.getInt("car_id"));
@@ -289,17 +288,25 @@ public class OrderDAOImpl extends AbstractDAO implements OrderDAO {
         return order;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SuchOrderNotExistsException {
         User user = new User(7, "Alex", "3456", "Артем", "Бобок", "PP987654",
                 "090909", UserRole.CLIENT);
         Car car=new Car(0,Manufacturer.VOLKSWAGEN,"T5",2015, BodyType.MINIVAN, TransmissionType.AUTOMATIC_TRANSMISSION,
                 2.5,100);
-        Order order=new Order(5,500, LocalDateTime.of(2019,05,15,14,20),true
-                ,Condition.GOOD,LocalDateTime.of(2019,05,20,14,20),
+        Order order=new Order(5,500, LocalDate.of(2019,05,15),true
+                ,Condition.GOOD,LocalDate.of(2019,05,20),
                 true,null);
+        order.setId(8);
         order.setCar(car);
         order.setUser(user);
         OrderDAOImpl orderDAO=new OrderDAOImpl();
-        orderDAO.insert(order);
+       System.out.println(orderDAO.findAll());
+//     //  orderDAO.insert(order);
+//       // orderDAO.updateTotalSum(180.0,order);
+//        //orderDAO.delete(order);
+//        //orderDAO.setCarCondition(Condition.GOOD,order);
+//        orderDAO.processOrder(false,order);
+//        orderDAO.justifyRefuse("You had accident last time",order);
+      //  System.out.println(orderDAO.findAll());
     }
 }

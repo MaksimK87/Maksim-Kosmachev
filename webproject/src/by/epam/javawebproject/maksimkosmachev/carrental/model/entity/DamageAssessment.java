@@ -8,28 +8,27 @@ public class DamageAssessment extends Entity {
     private double frontDoor;
     private double rearDoor;
     private double fender;
+    private Order order;
 
-    public DamageAssessment(int id, double carHood, double carBoot, double frontDoor,
+    public DamageAssessment(double carHood, double carBoot, double frontDoor,
                             double rearDoor, double fender) {
-        super(id);
         this.carHood = carHood;
         this.carBoot = carBoot;
         this.frontDoor = frontDoor;
         this.rearDoor = rearDoor;
         this.fender = fender;
-    }
-    public DamageAssessment(){
-
+        this.order =new Order();
     }
 
-    public DamageAssessment(DamageAssessment damageAssessment){
-        this.setId(damageAssessment.getId());
-        this.carHood = damageAssessment.carHood;
-        this.carBoot = damageAssessment.carBoot;
-        this.frontDoor = damageAssessment.frontDoor;
-        this.rearDoor = damageAssessment.rearDoor;
-        this.fender = damageAssessment.fender;
+    public DamageAssessment() {
+        this.carHood = -1;
+        this.carBoot = -1;
+        this.frontDoor = -1;
+        this.rearDoor = -1;
+        this.fender = -1;
+        this.order =new Order();
     }
+
 
 
     public double getCarHood() {
@@ -72,33 +71,49 @@ public class DamageAssessment extends Entity {
         this.fender = fender;
     }
 
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public int getOrderId() {
+        return order.getId();
+    }
+
+    public void setOrderId(int id) {
+        order.setId(id);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DamageAssessment that = (DamageAssessment) o;
-        return getId() == that.getId() &&
-                Double.compare(that.carHood, carHood) == 0 &&
+        return Double.compare(that.carHood, carHood) == 0 &&
                 Double.compare(that.carBoot, carBoot) == 0 &&
                 Double.compare(that.frontDoor, frontDoor) == 0 &&
                 Double.compare(that.rearDoor, rearDoor) == 0 &&
-                Double.compare(that.fender, fender) == 0;
+                Double.compare(that.fender, fender) == 0 &&
+                Objects.equals(order, that.order);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), carHood, carBoot, frontDoor, rearDoor, fender);
+        return Objects.hash(carHood, carBoot, frontDoor, rearDoor, fender, order);
     }
 
     @Override
     public String toString() {
-        return "DamageAssessment{" +
+        return " DamageAssessment{" +
                 "damageId=" + getId() +
                 ", carHood=" + carHood +
                 ", carBoot=" + carBoot +
                 ", frontDoor=" + frontDoor +
                 ", rearDoor=" + rearDoor +
-                ", fender=" + fender +
+                ", fender=" + fender + ", orderId "+order.getId()+
                 '}';
     }
 }

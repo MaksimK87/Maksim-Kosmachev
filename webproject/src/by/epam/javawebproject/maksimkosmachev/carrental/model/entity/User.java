@@ -1,7 +1,7 @@
 package by.epam.javawebproject.maksimkosmachev.carrental.model.entity;
 
 import by.epam.javawebproject.maksimkosmachev.carrental.model.entity.enumpackage.UserRole;
-import by.epam.javawebproject.maksimkosmachev.carrental.model.exception.UserIllegalValueException;
+import by.epam.javawebproject.maksimkosmachev.carrental.model.dao.exception.UserIllegalValueException;
 import org.apache.log4j.Logger;
 
 import java.util.Objects;

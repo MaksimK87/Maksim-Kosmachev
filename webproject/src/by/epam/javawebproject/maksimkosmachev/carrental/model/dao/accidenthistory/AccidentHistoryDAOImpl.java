@@ -1,8 +1,8 @@
 package by.epam.javawebproject.maksimkosmachev.carrental.model.dao.accidenthistory;
 
 import by.epam.javawebproject.maksimkosmachev.carrental.model.dao.AbstractDAO;
-import by.epam.javawebproject.maksimkosmachev.carrental.model.exception.ConnectionPoolException;
-import by.epam.javawebproject.maksimkosmachev.carrental.model.exception.EmptyResultSetException;
+import by.epam.javawebproject.maksimkosmachev.carrental.model.dao.exception.ConnectionPoolException;
+import by.epam.javawebproject.maksimkosmachev.carrental.model.dao.exception.EmptyResultSetException;
 import by.epam.javawebproject.maksimkosmachev.carrental.model.entity.AccidentHistory;
 import by.epam.javawebproject.maksimkosmachev.carrental.model.entity.Entity;
 import by.epam.javawebproject.maksimkosmachev.carrental.util.SystemConfig;
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class AccidentHistoryDAOImpl extends AbstractDAO implements AccidentHistoryDAO {
 
-    private static Logger logger = Logger.getLogger(by.epam.javawebproject.maksimkosmachev.carrental.model.entity.AccidentHistory.class);
+    private static Logger logger = Logger.getLogger(AccidentHistory.class);
 
     static {
         try {
@@ -42,8 +42,8 @@ public class AccidentHistoryDAOImpl extends AbstractDAO implements AccidentHisto
 
     @Override
     public List<AccidentHistory> findAll() {
-        Connection connection;
-        PreparedStatement preparedStatement;
+        Connection connection=null;
+        PreparedStatement preparedStatement=null;
         List<AccidentHistory> historyList = null;
         try {
             connection = getConnectionFromPool();
@@ -55,6 +55,9 @@ public class AccidentHistoryDAOImpl extends AbstractDAO implements AccidentHisto
             logger.error("Exception while finding all accident histories" + e);
         } catch (ConnectionPoolException e) {
             logger.error("Exception in connection pool while finding all accident histories" + e);
+        }
+        finally {
+            closeResource(preparedStatement, connection);
         }
         return historyList;
     }

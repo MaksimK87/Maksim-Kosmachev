@@ -7,14 +7,15 @@ public class AccidentHistory extends Entity {
     private double damageCost;
     private boolean guilt;
     private LocalDate accidentDate;
+    private Order order;
 
-    public AccidentHistory(int id,double damageCost, boolean guilt, LocalDate accidentDate) {
-        super(id);
+    public AccidentHistory(double damageCost, boolean guilt, LocalDate accidentDate) {
         this.damageCost = damageCost;
         this.guilt = guilt;
         this.accidentDate = accidentDate;
     }
-    public AccidentHistory(){
+
+    public AccidentHistory() {
 
     }
 
@@ -43,7 +44,21 @@ public class AccidentHistory extends Entity {
         this.accidentDate = accidentDate;
     }
 
+    public Order getOrder() {
+        return order;
+    }
 
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public int getOrderId() {
+        return order.getId();
+    }
+
+    public void setOrderId(int id) {
+        order.setId(id);
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -62,7 +77,7 @@ public class AccidentHistory extends Entity {
 
     @Override
     public String toString() {
-        return "AccidentHistoryDAO{" +
+        return super.getId() + " AccidentHistoryDAO{" +
                 "damageCost=" + damageCost +
                 ", guilt=" + guilt +
                 ", accidentDate=" + accidentDate +

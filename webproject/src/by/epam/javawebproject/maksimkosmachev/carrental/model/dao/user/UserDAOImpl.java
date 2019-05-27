@@ -1,10 +1,10 @@
 package by.epam.javawebproject.maksimkosmachev.carrental.model.dao.user;
 
 import by.epam.javawebproject.maksimkosmachev.carrental.model.dao.AbstractDAO;
+import by.epam.javawebproject.maksimkosmachev.carrental.model.dao.exception.*;
 import by.epam.javawebproject.maksimkosmachev.carrental.model.entity.Entity;
 import by.epam.javawebproject.maksimkosmachev.carrental.model.entity.User;
 import by.epam.javawebproject.maksimkosmachev.carrental.model.entity.enumpackage.UserRole;
-import by.epam.javawebproject.maksimkosmachev.carrental.model.exception.*;
 import by.epam.javawebproject.maksimkosmachev.carrental.util.SystemConfig;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
